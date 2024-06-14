@@ -24,8 +24,8 @@ USER_PASSWORD=""
 
 ## Usage
 
-Run test in debug mode:
+Run test:
 
 ```sh
-npx playwright test --project="plooto" --headed --debug tests/TestName.js
+npx playwright test --project="plooto" --headed tests/TestName.js
 ```
