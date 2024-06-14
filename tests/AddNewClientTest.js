@@ -15,7 +15,7 @@ test.describe("Add New Client Test", () => {
   test('Create new client account', async ({ page }) => {
     await addNewClientPage.clickAddNewClient();
     await addNewClientPage.selectAccountingFirm();
-    await addNewClientPage.enterBusinessName('Death Star');
+    await addNewClientPage.enterBusinessName('Xerox');
     await addNewClientPage.enterBusinessPhone('5555555555');
     await addNewClientPage.enterExtension('1234');
     await addNewClientPage.selectCountry();
@@ -23,6 +23,7 @@ test.describe("Add New Client Test", () => {
     await addNewClientPage.clickContinueButton();
     await addNewClientPage.clickBuildPlanButton();
     await addNewClientPage.clickConfirmButton();
+    await addNewClientPage.clickGotItButton();
     await expect(page).toHaveURL("https://cac-q4-plto-ui-app-01.azurewebsites.net/#user/dashboard/dashboardWizard");
   });
 });

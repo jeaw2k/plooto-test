@@ -5,13 +5,12 @@ class AccountsReceivablePage extends BasePage {
         super(page);
         this.selectors = {
             ...this.selectors,
-            receivableLink: 'text=Receivables',
-            newReceivableButton: 'text=New Receivable',
-            manuallyEnterDetails: 'xpath=//div[contains(text(),"Manually Enter Receivable Details")]',
-            memo: '#memo',
-            fromInput: 'xpath=//input[@id="requestFrom0"]',
-            dropdownOption: 'xpath=/html[1]/body[1]/div[6]/ul[1]/li[1]',
-            requestPaymentsButton: 'text=Request Payments',
+            receivableLink: '//a[normalize-space()="Receivables"]',
+            newReceivableButton: '//button[normalize-space()="New Receivable"]',
+            manuallyEnterDetails: '//div[@class="dashboard-button-text px-du-2"]',
+            memoInput: '//input[@id="memo"]',
+            fromInput: '//input[@id="requestFrom0"]',
+            requestPaymentsButton: '//button[normalize-space()="Request Payments"]',
         };
     }
 
@@ -25,7 +24,7 @@ class AccountsReceivablePage extends BasePage {
     }
 
     async enterMemo(memo) {
-        await this.page.fill(this.selectors.memo, memo);
+        await this.page.fill(this.selectors.memoInput, memo);
     }
 
     async selectRequestFrom() {

@@ -5,11 +5,10 @@ class AccountsPayablePage extends BasePage {
     super(page);
     this.selectors = {
       ...this.selectors,
-      payableLink: 'text=Payables',
-      newPayableButton: 'text=New Payable',
+      payableLink: '//a[normalize-space()="Payables"]',
+      newPayableButton: '//button[normalize-space()="New Payable"]',
       manuallyEnterDetails: '//div[contains(text(),"Manually Enter Payment Details")]',
-      payToInput: 'input[id*="payTo"]',
-      // dropdownOption: '//input[@data-testid="payTo"]/following-sibling::ul/li[1]',
+      payToInput: '//input[@id="0_payToId"]',
     };
   }
 
@@ -28,7 +27,6 @@ class AccountsPayablePage extends BasePage {
   }
 
   async selectDropdownOption() {
-    // await this.page.click(this.selectors.dropdownOption);
     await this.page.keyboard.press('PageUp');
     await this.page.keyboard.press('Enter');
   }

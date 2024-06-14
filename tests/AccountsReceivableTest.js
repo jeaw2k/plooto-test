@@ -2,8 +2,6 @@ const { test, expect } = require("@playwright/test");
 const { LoginPage } = require("../pageobjects/LoginPage");
 const { AccountsReceivablePage } = require("../pageobjects/AccountsReceivablePage");
 
-require("dotenv").config();
-
 test.describe("Accounts Receivable Tests", () => {
     let accountsReceivablePage;
 
@@ -23,9 +21,7 @@ test.describe("Accounts Receivable Tests", () => {
         await accountsReceivablePage.selectRequestFrom();
         await accountsReceivablePage.clickContinue();
         await accountsReceivablePage.clickRequestPayment();
-
         await accountsReceivablePage.waitForFormTitle();
-
         const formTitleText = await accountsReceivablePage.getFormTitleText();
         expect(formTitleText).toContain('Great Job!');
     });

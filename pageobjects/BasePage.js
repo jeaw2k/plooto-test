@@ -2,11 +2,10 @@ class BasePage {
   constructor(page) {
     this.page = page;
     this.selectors = {
-      amountInput: 'input[id*="amount"]',
-      continueButton: 'text=Continue',
-      sendPaymentButton: 'text=Send Payment',
-      understandButton: 'text=I UNDERSTAND',
-      finalConfirmButton: '.btn',
+      amountInput: '//input[@id="amount"]',
+      continueButton: '//button[@type="submit"]',
+      sendPaymentButton: '//button[normalize-space()="Send Payment"]',
+      understandButton: '//button[normalize-space()="I Understand"]',
       formTitle: '//h3[@class="form-title mt-du-4"]',
     };
   }
@@ -34,13 +33,11 @@ class BasePage {
   async clickSendPayment() {
     await this.page.click(this.selectors.sendPaymentButton);
     await this.page.click(this.selectors.understandButton);
-    await this.page.click(this.selectors.finalConfirmButton);
   }
 
   async clickRequestPayment() {
     await this.page.click(this.selectors.requestPaymentsButton);
     await this.page.click(this.selectors.understandButton);
-    await this.page.click(this.selectors.finalConfirmButton);
   }
 
   async waitForFormTitle() {
