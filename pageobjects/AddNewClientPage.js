@@ -10,8 +10,12 @@ class AddNewClientPage extends BasePage {
       businessNameInput: '//input[@id="company-info-business-name"]',
       businessPhoneInput: '//input[@id="company-info-business-phone-number"]',
       extensionInput: '//input[@id="company-info-business-phone-extension"]',
-      payToInput: 'input[id*="payTo"]',
-      // dropdownOption: '//input[@data-testid="payTo"]/following-sibling::ul/li[1]',
+      countrySelect: '//div[@id="company-info-country"]',
+      specifyBusinessSelect: '//div[@id="company-info-business-classification"]',
+      continueButton: '(//button[span[text()="Continue"]])[1]',
+      buildPlanButton: '(//button[span[text()="Build Plan"]])[1]',
+      confirmButton: '//button[span[text()="Confirm subscription"]]',
+      gotItButton: '//button[normalize-space()="Got it"]',
     };
   }
 
@@ -21,8 +25,7 @@ class AddNewClientPage extends BasePage {
 
   async selectAccountingFirm() {
     await this.page.click(this.selectors.accountingFirmSelect);
-    await this.page.keyboard.press('PageUp');
-    await this.page.keyboard.press('Enter');
+    await this.pressPageUpAndEnter();
   }
 
   async enterBusinessName(name) {
@@ -33,17 +36,34 @@ class AddNewClientPage extends BasePage {
     await this.page.fill(this.selectors.businessPhoneInput, phone);
   }
 
-  async enterBusinessPhone(phone) {
-    await this.page.fill(this.selectors.extensionInput, phone);
+  async enterExtension(number) {
+    await this.page.fill(this.selectors.extensionInput, number);
   }
 
-  async selectPayToField() {
-    await this.page.click(this.selectors.payToInput);
-    await this.page.waitForTimeout(1000); // Adjust the timeout as needed
+  async selectCountry() {
+    await this.page.click(this.selectors.countrySelect);
+    await this.pressPageUpAndEnter();
   }
 
-  async selectDropdownOption() {
-    // await this.page.click(this.selectors.dropdownOption);
+  async selectSpecifyBusiness() {
+    await this.page.click(this.selectors.specifyBusinessSelect);
+    await this.pressPageUpAndEnter();
+  }
+
+  async clickContinueButton() {
+    await this.page.click(this.selectors.continueButton);
+  }
+
+  async clickBuildPlanButton() {
+    await this.page.click(this.selectors.buildPlanButton);
+  }
+
+  async clickConfirmButton() {
+    await this.page.click(this.selectors.confirmButton);
+    await this.page.click(this.selectors.gotItButton);
+  }
+
+  async pressPageUpAndEnter() {
     await this.page.keyboard.press('PageUp');
     await this.page.keyboard.press('Enter');
   }

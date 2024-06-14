@@ -2,8 +2,6 @@ const { test, expect } = require("@playwright/test");
 const { LoginPage } = require("../pageobjects/LoginPage");
 const { AddNewClientPage } = require("../pageobjects/AddNewClientPage");
 
-require("dotenv").config();
-
 test.describe("Add New Client Test", () => {
   let addNewClientPage;
 
@@ -14,11 +12,17 @@ test.describe("Add New Client Test", () => {
     addNewClientPage = new AddNewClientPage(page);
   });
 
-  test('test test', async () => {
+  test('Create new client account', async ({ page }) => {
     await addNewClientPage.clickAddNewClient();
     await addNewClientPage.selectAccountingFirm();
     await addNewClientPage.enterBusinessName('Death Star');
     await addNewClientPage.enterBusinessPhone('5555555555');
-
+    await addNewClientPage.enterExtension('1234');
+    await addNewClientPage.selectCountry();
+    await addNewClientPage.selectSpecifyBusiness();
+    await addNewClientPage.clickContinueButton();
+    await addNewClientPage.clickBuildPlanButton();
+    await addNewClientPage.clickConfirmButton();
+    await expect(page).toHaveURL("https://cac-q4-plto-ui-app-01.azurewebsites.net/#user/dashboard/dashboardWizard");
   });
 });
