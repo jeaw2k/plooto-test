@@ -14,6 +14,14 @@ Install browser binaries:
 npx playwright install
 ```
 
+## Credentials
+Enter the credentials in the .env file
+
+```sh
+USER_EMAIL=""
+USER_PASSWORD=""
+```
+
 ## Usage
 
 Run test in debug mode:
