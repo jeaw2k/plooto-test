@@ -1,13 +1,32 @@
-const { test, expect } = require("./fixtures");
+const { test, expect } = require("../fixtures/base.fixture");
 
 test.describe("Accounts Receivable Tests", () => {
 
-    test.beforeEach(async ({ page, loginAsUser }) => {
+    test.beforeEach(async ({ page, loginAsUser, siteURL }) => {
         await loginAsUser;
-        await expect(page).toHaveURL(process.env.APP_URL);
+        await page.waitForLoadState('networkidle');
+        await expect(page).toHaveURL(siteURL);
     });
 
-    test('should navigate to Receivable and verify "Great Job!" text', async ({ page, accountsReceivable }) => {
+    test('should navigate to Receivable, check all entered values and verify "Great Job!" text', async ({ page, accountsReceivable }) => {
+        await accountsReceivable.enterMemo('Memo');
+        await accountsReceivable.enterAmount(100);
+        await accountsReceivable.selectRequestFrom();
+        
+        await accountsReceivable.clickContinue();
+
+        const fromValueOnPage = await accountsReceivable.getDisplayedFromValue();
+        expect(fromValueOnPage).toBe(accountsReceivable.fromValue);
+        
+        const memoValueOnPage = await accountsReceivable.getDisplayedMemoValue();
+        expect(memoValueOnPage).toBe(accountsReceivable.memoValue);
+        
+        const amountValueOnPage = await accountsReceivable.getDisplayedAmountValue();
+        expect(parseFloat(amountValueOnPage)).toBe(accountsReceivable.amountValue);
+        
+        await accountsReceivable.clickRequestPayment();
+        
+        await accountsReceivable.waitForFormTitle();
         const formTitleText = await accountsReceivable.getFormTitleText();
         expect(formTitleText).toContain('Great Job!');
     });

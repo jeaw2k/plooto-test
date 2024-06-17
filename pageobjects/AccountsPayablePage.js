@@ -6,7 +6,10 @@ class AccountsPayablePage {
         newPayableButton: () => '//button[normalize-space()="New Payable"]',
         manuallyEnterDetails: () => '//div[contains(text(),"Manually Enter Payment Details")]',
         payToInput: () => '//input[@id="0_payToId"]',
+        payToSelected: () => '//li[contains(@class, "flexselect_selected")]',
+        payToDisplay: () => '//span[@data-testid="pay-to"]',
         amountInput: () => '//input[@id="0_amount"]',
+        amountDisplay: () => '//span[@data-testid="amount"]',
         continueButton: () => '//button[@type="submit"]',
         sendPaymentButton: () => '//button[normalize-space()="Send Payment"]',
         understandButton: () => '//button[normalize-space()="I Understand"]',
@@ -14,11 +17,14 @@ class AccountsPayablePage {
       },
     };
     this.page = page;
+    this.toValue = "";
+    this.amountValue = "";
   }
 
   async navigateToPayables() {
-    await this.navigateTo(process.env.LOGIN_URL);
+    await this.page.goto('/#user');
     await this.page.waitForLoadState('networkidle');
+    
     await this.page.click(this.fields.payablePage.payableLink());
   }
 
@@ -28,16 +34,19 @@ class AccountsPayablePage {
 
   async selectPayToField() {
     await this.page.click(this.fields.payablePage.payToInput());
-    await this.page.waitForTimeout(1000); // Adjust the timeout as needed
+    await this.page.waitForTimeout(1000);
   }
 
   async selectDropdownOption() {
     await this.page.keyboard.press('PageUp');
     await this.page.keyboard.press('Enter');
+    const selectedElement = await this.page.$(this.fields.payablePage.payToSelected());
+    const selectedValue = await selectedElement.innerText();
+    this.toValue = selectedValue
   }
 
-  async navigateTo(url) {
-    await this.page.goto(url);
+  async getDisplayedToValue() {
+    return await this.page.innerText(this.fields.payablePage.payToDisplay());
   }
 
   async clickNewEntry(buttonSelector, manuallyEnterDetailsSelector) {
@@ -50,6 +59,11 @@ class AccountsPayablePage {
 
   async enterAmount(amount) {
     await this.page.fill(this.fields.payablePage.amountInput(), amount.toString());
+    this.amountValue = amount;
+  }
+
+  async getDisplayedAmountValue() {
+    return await this.page.innerText(this.fields.payablePage.amountDisplay());
   }
 
   async clickContinue() {
