@@ -9,13 +9,18 @@ const test = base.test.extend({
     loginAsUser: async ({ page }, use) => {
         const loginPage = new LoginPage(page);
         await loginPage.loginAs(process.env.USER_EMAIL, process.env.USER_PASSWORD);
+        await page.waitForLoadState('networkidle');
         await use(page);
     },
 
     siteURL: async ({}, use) => {
         await use(process.env.SITE_URL || "/#user/company/select");
     },
-    
+
+    async waitForElement() {
+        await this.page.waitForLoadState('networkidle');
+    }
+
     accountsPayable: async ({ page }, use) => {
         const accountsPayablePage = new AccountsPayablePage(page);
         await accountsPayablePage.navigateToPayables();

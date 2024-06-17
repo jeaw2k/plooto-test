@@ -3,7 +3,6 @@ const { test, expect } = require("../fixtures/base.fixture");
 test.describe("Accounts Receivable Tests", () => {
     test.beforeEach(async ({ page, loginAsUser, siteURL }) => {
         await loginAsUser;
-        await page.waitForLoadState('networkidle');
         await expect(page).toHaveURL(siteURL);
     });
 

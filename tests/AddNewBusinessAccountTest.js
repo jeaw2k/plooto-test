@@ -4,7 +4,6 @@ test.describe("Add New Client Test", () => {
 
 		test.beforeEach(async ({page, loginAsUser, siteURL}) => {
 				await loginAsUser;
-				await page.waitForLoadState('networkidle');
 				await expect(page).toHaveURL(siteURL);
 		});
 
