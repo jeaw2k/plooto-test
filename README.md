@@ -2,7 +2,7 @@
 
 ## Author:
 
-- Task completed by Yura Spizhoviy, according to the information provided by Plooto
+- Task completed by Yuriy Spizhovyi, according to the information provided by Plooto
 
 ## Main goal
 
