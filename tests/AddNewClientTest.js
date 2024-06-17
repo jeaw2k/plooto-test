@@ -23,8 +23,6 @@ test.describe("Add New Client Test", () => {
     
     await newClient.clickGotItButton();
     
-    // await expect(page).toHaveURL("https://cac-q4-plto-ui-app-01.azurewebsites.net/#user/dashboard/dashboardWizard");
-
-    await expect(page).toHaveURL(process.env.SITE_URL || "/#user/dashboard/dashboardWizard");
+    await expect(page).toHaveURL("https://cac-q4-plto-ui-app-01.azurewebsites.net/#user/dashboard/dashboardWizard");
   });
 });
