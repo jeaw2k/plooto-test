@@ -1,29 +1,27 @@
-const { test, expect } = require("@playwright/test");
-const { LoginPage } = require("../pageobjects/LoginPage");
-const { AddNewClientPage } = require("../pageobjects/AddNewClientPage");
+const {test, expect} = require("../fixtures/base.fixture");
 
 test.describe("Add New Client Test", () => {
-  let addNewClientPage;
 
-  test.beforeEach(async ({ page }) => {
-    const loginPage = new LoginPage(page);
-    await loginPage.loginAs(process.env.USER_EMAIL, process.env.USER_PASSWORD);
+		test.beforeEach(async ({page, loginAsUser, siteURL}) => {
+				await loginAsUser;
+				await expect(page).toHaveURL(siteURL);
+		});
 
-    addNewClientPage = new AddNewClientPage(page);
-  });
+		test('Create new client account', async ({page, newClient}) => {
+				await newClient.enterBusinessName('Xerox');
+				await newClient.enterBusinessPhone('5555555555');
+				await newClient.enterExtension('1234');
+				await newClient.selectCountry();
+				await newClient.selectSpecifyBusiness();
 
-  test('Create new client account', async ({ page }) => {
-    await addNewClientPage.clickAddNewClient();
-    await addNewClientPage.selectAccountingFirm();
-    await addNewClientPage.enterBusinessName('Xerox');
-    await addNewClientPage.enterBusinessPhone('5555555555');
-    await addNewClientPage.enterExtension('1234');
-    await addNewClientPage.selectCountry();
-    await addNewClientPage.selectSpecifyBusiness();
-    await addNewClientPage.clickContinueButton();
-    await addNewClientPage.clickBuildPlanButton();
-    await addNewClientPage.clickConfirmButton();
-    await addNewClientPage.clickGotItButton();
-    await expect(page).toHaveURL("https://cac-q4-plto-ui-app-01.azurewebsites.net/#user/dashboard/dashboardWizard");
-  });
+				await newClient.clickContinueButton();
+
+				await newClient.clickBuildPlanButton();
+
+				await newClient.clickConfirmButton();
+
+				await newClient.clickGotItButton();
+
+				await expect(page).toHaveURL("https://cac-q4-plto-ui-app-01.azurewebsites.net/#user/dashboard/dashboardWizard");
+		});
 });

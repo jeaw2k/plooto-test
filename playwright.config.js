@@ -38,8 +38,7 @@ const config = {
                 screenshot: process.env.CI ? "off" : "on",
                 video: process.env.CI ? "off" : "retain-on-failure",
                 permissions: ["geolocation"],
-                baseURL: process.env.SITE_URL,
-                viewport: { width: 1920, height: 1080 }, // Set default viewport size
+                baseURL: process.env.BASE_URL || "https://cac-q4-plto-ui-app-01.azurewebsites.net",
             },
         }
     ],

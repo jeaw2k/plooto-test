@@ -1,28 +1,34 @@
-const { test, expect } = require("@playwright/test");
-const { LoginPage } = require("../pageobjects/LoginPage");
-const { AccountsReceivablePage } = require("../pageobjects/AccountsReceivablePage");
+const { test, expect } = require("../fixtures/base.fixture");
 
 test.describe("Accounts Receivable Tests", () => {
-    let accountsReceivablePage;
-
-    test.beforeEach(async ({ page }) => {
-        const loginPage = new LoginPage(page);
-        await loginPage.loginAs(process.env.USER_EMAIL, process.env.USER_PASSWORD);
-        await expect(page).toHaveURL(process.env.APP_URL);
-
-        accountsReceivablePage = new AccountsReceivablePage(page);
+    test.beforeEach(async ({ page, loginAsUser, siteURL }) => {
+        await loginAsUser;
+        await expect(page).toHaveURL(siteURL);
     });
 
-    test('should navigate to Receivable and verify "Great Job!" text', async () => {
-        await accountsReceivablePage.navigateToReceivables();
-        await accountsReceivablePage.clickNewReceivable();
-        await accountsReceivablePage.enterMemo('Memo');
-        await accountsReceivablePage.enterAmount(100);
-        await accountsReceivablePage.selectRequestFrom();
-        await accountsReceivablePage.clickContinue();
-        await accountsReceivablePage.clickRequestPayment();
-        await accountsReceivablePage.waitForFormTitle();
-        const formTitleText = await accountsReceivablePage.getFormTitleText();
+    test('should navigate to Receivable, check all entered values and verify "Great Job!" text', async ({ page, accountsReceivable }) => {
+        const memoValue = 'Memo';
+        const amountValue = 100;
+
+        await accountsReceivable.enterMemo(memoValue);
+        await accountsReceivable.enterAmount(amountValue);
+        const fromValue = await accountsReceivable.selectRequestFrom();
+
+        await accountsReceivable.clickContinue();
+
+        const fromValueOnPage = await accountsReceivable.getDisplayedFromValue();
+        expect(fromValueOnPage).toBe(fromValue);
+
+        const memoValueOnPage = await accountsReceivable.getDisplayedMemoValue();
+        expect(memoValueOnPage).toBe(memoValue);
+
+        const amountValueOnPage = await accountsReceivable.getDisplayedAmountValue();
+        expect(parseFloat(amountValueOnPage)).toBe(amountValue);
+
+        await accountsReceivable.clickRequestPayment();
+
+        await accountsReceivable.waitForFormTitle();
+        const formTitleText = await accountsReceivable.getFormTitleText();
         expect(formTitleText).toContain('Great Job!');
     });
 });
