@@ -1,92 +1,88 @@
 class AccountsPayablePage {
-  constructor(page) {
-    this.fields = {
-      payablePage: {
-        payableLink: () => '//a[normalize-space()="Payables"]',
-        newPayableButton: () => '//button[normalize-space()="New Payable"]',
-        manuallyEnterDetails: () => '//div[contains(text(),"Manually Enter Payment Details")]',
-        payToInput: () => '//input[@id="0_payToId"]',
-        payToSelected: () => '//li[contains(@class, "flexselect_selected")]',
-        payToDisplay: () => '//span[@data-testid="pay-to"]',
-        amountInput: () => '//input[@id="0_amount"]',
-        amountDisplay: () => '//span[@data-testid="amount"]',
-        continueButton: () => '//button[@type="submit"]',
-        sendPaymentButton: () => '//button[normalize-space()="Send Payment"]',
-        understandButton: () => '//button[normalize-space()="I Understand"]',
-        formTitle: () => '//h3[@class="form-title mt-du-4"]',
-      },
-    };
-    this.page = page;
-    this.toValue = "";
-    this.amountValue = "";
-  }
+		constructor(page) {
+				this.fields = {
+						payablePage: {
+								payableLink: () => '//a[normalize-space()="Payables"]',
+								newPayableButton: () => '//button[normalize-space()="New Payable"]',
+								manuallyEnterDetails: () => '//div[contains(text(),"Manually Enter Payment Details")]',
+								payToInput: () => '//input[@id="0_payToId"]',
+								payToSelected: () => '//li[contains(@class, "flexselect_selected")]',
+								payToDisplay: () => '//span[@data-testid="pay-to"]',
+								amountInput: () => '//input[@id="0_amount"]',
+								amountDisplay: () => '//span[@data-testid="amount"]',
+								continueButton: () => '//button[@type="submit"]',
+								sendPaymentButton: () => '//button[normalize-space()="Send Payment"]',
+								understandButton: () => '//button[normalize-space()="I Understand"]',
+								formTitle: () => '//h3[@class="form-title mt-du-4"]',
+						},
+				};
+				this.page = page;
+		}
 
-  async navigateToPayables() {
-    await this.page.goto('/#user');
-    await this.page.waitForLoadState('networkidle');
-    
-    await this.page.click(this.fields.payablePage.payableLink());
-  }
+		async navigateToPayables() {
+				await this.page.goto('/#user');
+				await this.page.waitForLoadState('networkidle');
 
-  async clickNewPayable() {
-    await this.clickNewEntry(this.fields.payablePage.newPayableButton(), this.fields.payablePage.manuallyEnterDetails());
-  }
+				await this.page.click(this.fields.payablePage.payableLink());
+		}
 
-  async selectPayToField() {
-    await this.page.click(this.fields.payablePage.payToInput());
-    await this.page.waitForTimeout(1000);
-  }
+		async clickNewPayable() {
+				await this.clickNewEntry(this.fields.payablePage.newPayableButton(), this.fields.payablePage.manuallyEnterDetails());
+		}
 
-  async selectDropdownOption() {
-    await this.page.keyboard.press('PageUp');
-    await this.page.keyboard.press('Enter');
-    const selectedElement = await this.page.$(this.fields.payablePage.payToSelected());
-    const selectedValue = await selectedElement.innerText();
-    this.toValue = selectedValue
-  }
+		async selectPayToField() {
+				await this.page.click(this.fields.payablePage.payToInput());
+				await this.page.waitForTimeout(1000);
+		}
 
-  async getDisplayedToValue() {
-    return await this.page.innerText(this.fields.payablePage.payToDisplay());
-  }
+		async selectDropdownOption() {
+				await this.page.keyboard.press('PageUp');
+				await this.page.keyboard.press('Enter');
+				const selectedElement = await this.page.$(this.fields.payablePage.payToSelected());
+				return await selectedElement.innerText();
+		}
 
-  async clickNewEntry(buttonSelector, manuallyEnterDetailsSelector) {
-    await this.page.click(buttonSelector);
-    await this.page.waitForLoadState('networkidle');
-    await this.waitForElement(manuallyEnterDetailsSelector);
-    await this.page.click(manuallyEnterDetailsSelector);
-    await this.page.waitForLoadState('networkidle');
-  }
+		async getDisplayedToValue() {
+				return await this.page.innerText(this.fields.payablePage.payToDisplay());
+		}
 
-  async enterAmount(amount) {
-    await this.page.fill(this.fields.payablePage.amountInput(), amount.toString());
-    this.amountValue = amount;
-  }
+		async clickNewEntry(buttonSelector, manuallyEnterDetailsSelector) {
+				await this.page.click(buttonSelector);
+				await this.page.waitForLoadState('networkidle');
+				await this.waitForElement(manuallyEnterDetailsSelector);
+				await this.page.click(manuallyEnterDetailsSelector);
+				await this.page.waitForLoadState('networkidle');
+		}
 
-  async getDisplayedAmountValue() {
-    return await this.page.innerText(this.fields.payablePage.amountDisplay());
-  }
+		async enterAmount(amount) {
+				await this.page.fill(this.fields.payablePage.amountInput(), amount.toString());
+		}
 
-  async clickContinue() {
-    await this.page.click(this.fields.payablePage.continueButton());
-  }
+		async getDisplayedAmountValue() {
+				return await this.page.innerText(this.fields.payablePage.amountDisplay());
+		}
 
-  async clickSendPayment() {
-    await this.page.click(this.fields.payablePage.sendPaymentButton());
-    await this.page.click(this.fields.payablePage.understandButton());
-  }
+		async clickContinue() {
+				await this.page.click(this.fields.payablePage.continueButton());
+		}
 
-  async waitForFormTitle() {
-    await this.page.waitForSelector(this.fields.payablePage.formTitle());
-  }
+		async clickSendPayment() {
+				await this.page.click(this.fields.payablePage.sendPaymentButton());
+				await this.page.click(this.fields.payablePage.understandButton());
+		}
 
-  async getFormTitleText() {
-    const element = await this.page.$(this.fields.payablePage.formTitle());
-    return await element.innerText();
-  }
+		async waitForFormTitle() {
+				await this.page.waitForSelector(this.fields.payablePage.formTitle());
+		}
 
-  async waitForElement(selector) {
-    await this.page.waitForSelector(selector, { state: 'visible' });
-  }
+		async getFormTitleText() {
+				const element = await this.page.$(this.fields.payablePage.formTitle());
+				return await element.innerText();
+		}
+
+		async waitForElement(selector) {
+				await this.page.waitForSelector(selector, {state: 'visible'});
+		}
 }
 
 module.exports = { AccountsPayablePage };

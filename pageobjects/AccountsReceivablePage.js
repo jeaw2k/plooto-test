@@ -1,5 +1,5 @@
 class AccountsReceivablePage {
-constructor(page) {
+    constructor(page) {
         this.fields = {
             receivablePage: {
                 receivableLink: () => '//a[normalize-space()="Receivables"]',
@@ -20,15 +20,11 @@ constructor(page) {
             },
         };
         this.page = page;
-        this.memoValue = "";
-        this.fromValue = "";
-        this.amountValue = "";
     }
 
     async navigateToReceivables() {
         await this.page.goto('/#user');
         await this.page.waitForLoadState('networkidle');
-
         await this.page.click(this.fields.receivablePage.receivableLink());
     }
 
@@ -38,7 +34,6 @@ constructor(page) {
 
     async enterMemo(memo) {
         await this.page.fill(this.fields.receivablePage.memoInput(), memo);
-        this.memoValue = memo;
     }
 
     async getDisplayedMemoValue() {
@@ -51,8 +46,7 @@ constructor(page) {
         await this.page.waitForTimeout(2000);
         await this.page.keyboard.press('Tab');
         const selectedElement = await this.page.$(this.fields.receivablePage.fromSelected());
-        const selectedValue = await selectedElement.innerText();
-        this.fromValue = selectedValue
+        return await selectedElement.innerText();
     }
 
     async getDisplayedFromValue() {
@@ -63,8 +57,7 @@ constructor(page) {
         await this.page.keyboard.press('PageUp');
         await this.page.keyboard.press('Enter');
         const selectedElement = await this.page.$(this.fields.payablePage.payToSelected());
-        const selectedValue = await selectedElement.innerText();
-        this.toValue = selectedValue
+        return await selectedElement.innerText();
     }
 
     async getDisplayedToValue() {
@@ -81,7 +74,6 @@ constructor(page) {
 
     async enterAmount(amount) {
         await this.page.fill(this.fields.receivablePage.amountInput(), amount.toString());
-        this.amountValue = amount;
     }
 
     async getDisplayedAmountValue() {
@@ -97,11 +89,6 @@ constructor(page) {
         await this.page.click(this.fields.receivablePage.understandButton());
     }
 
-    async clickRequestPayment() {
-        await this.page.click(this.fields.receivablePage.requestPaymentsButton());
-        await this.page.click(this.fields.receivablePage.understandButton());
-    }
-
     async waitForFormTitle() {
         await this.page.waitForTimeout(700);
         await this.page.waitForSelector(this.fields.receivablePage.formTitle());
@@ -113,7 +100,7 @@ constructor(page) {
     }
 
     async waitForElement(selector) {
-        await this.page.waitForSelector(selector, { state: 'visible' });
+        await this.page.waitForSelector(selector, {state: 'visible'});
     }
 }
 

@@ -9,21 +9,23 @@ test.describe("Accounts Payable Tests", () => {
     });
 
     test('should navigate to Payable, check all entered values and verify "Great Job!" text', async ({ page, accountsPayable }) => {
+        const amountValue = 100;
+
         await accountsPayable.selectPayToField();
-        await accountsPayable.selectDropdownOption();
-        await accountsPayable.enterAmount(100);
-        
+        const toValue = await accountsPayable.selectDropdownOption();
+        await accountsPayable.enterAmount(amountValue);
+
         await accountsPayable.clickContinue();
-        
+
         const toValueOnPage = await accountsPayable.getDisplayedToValue();
         const formattedToValue = accountsPayable.toValue.replace(/ *\([^)]*\) */g, "");
         expect(toValueOnPage).toContain(formattedToValue);
-        
+
         const amountValueOnPage = await accountsPayable.getDisplayedAmountValue();
-        expect(parseFloat(amountValueOnPage)).toBe(accountsPayable.amountValue);
-        
+        expect(parseFloat(amountValueOnPage)).toBe(amountValue);
+
         await accountsPayable.clickSendPayment();
-        
+
         await accountsPayable.waitForFormTitle();
         const formTitleText = await accountsPayable.getFormTitleText();
         expect(formTitleText).toContain('Great Job!');

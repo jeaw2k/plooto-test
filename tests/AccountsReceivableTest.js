@@ -1,7 +1,6 @@
 const { test, expect } = require("../fixtures/base.fixture");
 
 test.describe("Accounts Receivable Tests", () => {
-
     test.beforeEach(async ({ page, loginAsUser, siteURL }) => {
         await loginAsUser;
         await page.waitForLoadState('networkidle');
@@ -9,23 +8,26 @@ test.describe("Accounts Receivable Tests", () => {
     });
 
     test('should navigate to Receivable, check all entered values and verify "Great Job!" text', async ({ page, accountsReceivable }) => {
-        await accountsReceivable.enterMemo('Memo');
-        await accountsReceivable.enterAmount(100);
-        await accountsReceivable.selectRequestFrom();
-        
+        const memoValue = 'Memo';
+        const amountValue = 100;
+
+        await accountsReceivable.enterMemo(memoValue);
+        await accountsReceivable.enterAmount(amountValue);
+        const fromValue = await accountsReceivable.selectRequestFrom();
+
         await accountsReceivable.clickContinue();
 
         const fromValueOnPage = await accountsReceivable.getDisplayedFromValue();
-        expect(fromValueOnPage).toBe(accountsReceivable.fromValue);
-        
+        expect(fromValueOnPage).toBe(fromValue);
+
         const memoValueOnPage = await accountsReceivable.getDisplayedMemoValue();
-        expect(memoValueOnPage).toBe(accountsReceivable.memoValue);
-        
+        expect(memoValueOnPage).toBe(memoValue);
+
         const amountValueOnPage = await accountsReceivable.getDisplayedAmountValue();
-        expect(parseFloat(amountValueOnPage)).toBe(accountsReceivable.amountValue);
-        
+        expect(parseFloat(amountValueOnPage)).toBe(amountValue);
+
         await accountsReceivable.clickRequestPayment();
-        
+
         await accountsReceivable.waitForFormTitle();
         const formTitleText = await accountsReceivable.getFormTitleText();
         expect(formTitleText).toContain('Great Job!');
