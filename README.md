@@ -71,7 +71,7 @@ npm install
 4. Installing playwright
 
 ```shell
-npm install playwright
+npx install playwright
 ```
 
 # Command Line
