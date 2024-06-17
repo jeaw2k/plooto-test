@@ -68,12 +68,6 @@ cd plooto-test
 npm install
 ```
 
-4. Installing playwright
-
-```shell
-npx install playwright
-```
-
 # Command Line
 
 ## Running a test file
